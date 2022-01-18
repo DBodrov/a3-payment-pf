@@ -1,0 +1,28 @@
+---
+variables:
+ NSPREFIX: "payment"                # Namespace prfix
+ NODEPORT: "375"                    # Will be reaasigned
+ DOCKERPORT: "80"                   # Container port
+ REPLICA: "1"                       # Amount of worker PODS
+
+ LOGENABLE: ""                      # Enable NFS log directory
+ MOUNTPATH: "/opt/application/logs" # Location of exported logs
+ CLAIMNAME: "site-container-logs"   # PVC name
+
+ HEALTH: "/healthcheck"             # URL for health check with readiness, liveness
+ READENABLE: "yes"                  # Enable readiness checks "" -- DISABLE
+ READINIT: "10"                     # Readiness init delay sec.
+ LIVENABLE: "yes"                   # Enable liveness checks "" -- DISABLE
+ LIVINIT:  "15"                     # Liveness init delay sec.
+ 
+ RESENABLE: "yes"                   # Enable resources limits "" -- DISABLE
+ REQCPU: "300m"                     # Reguest on start CPU 500 millicpus= 0.5 CPU
+ REQMEM: "20Mi"                     # Reguest on memory
+ LIMCPU: "1"                        # Limit CPU 500m=0.5 CPU
+ LIMMEM: "50Mi"                     # Limit memory
+ SONAR: "sonar-scanner  -Dsonar.projectKey=payment   -Dsonar.sources=.   -Dsonar.host.url=http://sonar.kubdev.a-3.ru   -Dsonar.login=96961b3400708d70b66d7d4af6417bb34aa4d2db -Dsonar.gitlab.project_id=$CI_PROJECT_PATH -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME"
+
+include:
+  - project: 'frontend/frontend-ci/nginx-ci'
+    ref: master
+    file: '/.gitlab-ci-uniframe-template-museum.yaml'
