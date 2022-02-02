@@ -19,6 +19,7 @@ module.exports = env => {
       chunkFilename: 'static/js/[name].[chunkhash].chunk.js',
       publicPath: '/',
       assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
+      clean: true,
     },
 
     module: {
@@ -81,10 +82,6 @@ module.exports = env => {
           minifyCSS: true,
           minifyURLs: true,
         },
-      }),
-
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
       }),
 
       new webpack.EnvironmentPlugin({

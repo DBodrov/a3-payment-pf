@@ -14,7 +14,9 @@
     "test": "jest",
     "test:coverage": "yarn test --coverage",
     "dev": "webpack serve --env USE_API_MOCKS=true",
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "version": "git add -A",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@a3/frontkit": "^1.0.13",
