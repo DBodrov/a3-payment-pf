@@ -1,5 +1,5 @@
 import React from 'react';
-import {Span, Loader, Button} from '@a3/frontkit';
+import {Span} from '@a3/frontkit';
 import {usePFInfo} from '@/context';
 import {Section} from '../styles';
 
