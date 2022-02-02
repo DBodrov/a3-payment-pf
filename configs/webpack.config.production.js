@@ -87,6 +87,7 @@ module.exports = env => {
       new webpack.EnvironmentPlugin({
         NODE_ENV: 'production',
         VERSION: VERSION,
+        USE_API_MOCKS: 'false'
       }),
     ],
   });

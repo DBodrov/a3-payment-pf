@@ -8,11 +8,11 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM registry.a-3.ru/frontend/base-images/nginx:16.1.0
+FROM nginx:stable-alpine
 EXPOSE 80
 
 WORKDIR /app/dist
-COPY --from=builder /app/dist/ ./
-COPY builds/nginx.conf /etc/nginx/conf/nginx.conf
+COPY --from=builder /app/dist/ /usr/share/nginx/html
+COPY builds/nginx.conf /etc/nginx/conf.d/default.conf
 
-ENTRYPOINT ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
