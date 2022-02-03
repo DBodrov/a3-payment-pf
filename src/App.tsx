@@ -1,6 +1,6 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
-import {PaymentPage} from '@/screens';
+import {PaymentPage, PaySuccessPage, NotFound} from '@/screens';
 
 export function App() {
   return (
@@ -11,8 +11,8 @@ export function App() {
         {/* <Route path="card" element={<Card />} /> */}
         {/* <Route path="success" element={<PaySuccessPage />} /> */}
       </Route>
-      {/* <Route path="result" element={<PayResultPage />} />
-      <Route path="*" element={<NotFound />} /> */}
+      <Route path="success" element={<PaySuccessPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
