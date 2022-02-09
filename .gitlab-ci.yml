@@ -25,4 +25,4 @@ variables:
 include:
   - project: 'frontend/frontend-ci/nginx-ci'
     ref: master
-    file: '/.gitlab-ci-uniframe-constructor-museum.yaml'
+    file: '/.gitlab-ci-payment-pf-museum.yaml'
