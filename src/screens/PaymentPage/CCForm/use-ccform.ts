@@ -1,6 +1,8 @@
 import React from 'react';
+import {useMutation, useQueryClient} from 'react-query';
 import {paymentProcess} from '@/api';
 import {usePFInfo, usePayment} from '@/context';
+import {IPaymentData} from '@/context/PaymentProvider/types';
 import {isEmptyString, onlyDigit} from '@/utils/string.utils';
 import {requiredFieldValidator, ccnValidation, ccExpValidation, cscValidation} from './validation.utils';
 import {TFormState, IFormChanges, initCCFormState, TFieldName} from './types';
@@ -52,7 +54,8 @@ export function useCCForm() {
   const [{error, touched, values}, dispatch] = React.useReducer(formStateReducer, initCCFormState);
   const {totalAmount, transactionId, description, prId} = usePFInfo();
   const {makeCardPayment} = usePayment();
-
+  // const mutation = useMutation(paymentProcess, {useErrorBoundary: true});
+  // const queryClient = useQueryClient();
 
   // const amount = Number(queryParams?.get('_SUM'));
 
@@ -164,17 +167,26 @@ export function useCCForm() {
       cardHolder: ccName,
     };
 
-    const paymentData = {
+    const paymentData: IPaymentData = {
       payCard,
       amount: totalAmount,
       description,
       paymentType: 'CARD',
       transactionId,
       prId,
-      returnUrl: `${window.location.origin}/result`,
+      returnUrl: 'https://sbp-psb-dev.a-3.ru/psb/result'
+      // returnUrl: `${window.location.origin}/v1/processing/result`,
     };
 
     makeCardPayment(paymentData);
+
+    // mutation.mutate(paymentData, {
+    //   onError: error => console.log('error', error),
+    //   onSuccess: data => {
+    //     console.log('success', data);
+    //     queryClient.setQueryData('bankResponse', {bankRes: data.data});
+    //   },
+    // });
 
   }, [description, makeCardPayment, prId, totalAmount, transactionId, values]);
 

@@ -1,5 +1,4 @@
 FROM registry.a-3.ru/frontend/base-images/node:16.13.0 AS builder
-ARG BUILD_VERSION
 
 WORKDIR /app
 COPY package*.json .npmrc ./

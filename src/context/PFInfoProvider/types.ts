@@ -190,12 +190,17 @@ export type TClientInfo = {
 
 export interface IPFInfoContext extends IPFInfo {}
 
+type TClientConfig = {
+  homeUrl: string;
+  logo: string;
+  companyName: string;
+}
 export interface IPFInfo {
-  config?: Record<string, any>;
+  config: TClientConfig;
   transactionId?: string;
   description?: string;
   amount: number;
   fee: number;
   totalAmount: number;
-  prId?: string;
+  prId: number;
 }

@@ -19,7 +19,6 @@ module.exports = env => {
       chunkFilename: 'static/js/[name].[chunkhash].chunk.js',
       publicPath: '/',
       assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
-      clean: true,
     },
 
     module: {

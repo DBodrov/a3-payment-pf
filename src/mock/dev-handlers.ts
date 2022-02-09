@@ -11,13 +11,17 @@ export const configHandlers = [
       ctx.status(200),
       ctx.json({
         data: {
-          transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65568',
+          transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65565',
           description: 'test payment ',
           amount: 300.0,
           fee: 49.0,
           totalAmount: 349.0,
           prId: 4241,
-          config: {},
+          config: {
+            homeUrl: 'https://rosfines.ru',
+            logo: 'https://rosfines.ru/themes/custom/rosfines/favicon.ico',
+            companyName: 'РосШтрафы'
+          },
         },
       }),
     );
@@ -56,6 +60,34 @@ function OnLoadEvent ()
 </BODY>
 </HTML>`;
 
+const fakePaReq = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3DS Hold</title>
+</head>
+<body>
+  <form action="http://localhost:9999/.netlify/functions/threeD" method="post">
+    <h3>Код - 1111</h3>
+    <input type="text" >
+    <button type="submit">Отправить код</button>
+  </form>
+
+</body>
+</html>
+`;
+
+export function redirect(destination, statusCode) {
+  return (res) => {
+    res.status = statusCode
+    res.headers.set('Location', destination)
+    return res
+  }
+}
+
 export const paymentHandlers = [
   rest.post('/v1/processing/pay', (req, res, ctx) => {
     return res(
@@ -65,8 +97,8 @@ export const paymentHandlers = [
         data: {
           transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65560',
           result: 'THREE_DS',
-          paReq:
-            '<!DOCTYPE html>\n<HTML>\n<HEAD>\n</HEAD>\n<BODY ONLOAD="javascript:OnLoadEvent();">\n<!--Start3ds-->\n<FORM ACTION="https://test.3ds.payment.ru/way4acs/pa?id=YfPr6lH9NKackQDqbAafnQ.OC" METHOD="post" NAME="ThreeDform" target="_self">\n<input name="PaReq" type="hidden" value="eJxVUu9PwjAQ/VeWfTXSsg1k5KhBwKAiAsNE/GJqd7BF1kHXKfjX287hj6Qf7r273Lt7V7g8ZFvnHVWR5rLnNhvUdVCKPE7lpuc+Lq/PO+4lg2WiEIcRilIhg3ssCr5BJ4177qy/wH13tZ6p9nYcTu+4eJsP9699vpZzl0GVZlALMNO/4QE5QdNJiYRLzYCL/dXNlLVawUUrBFJDyFDdDBmltBWG4UVI/XaHUiDfNEieIVuOouXL/WgxGAOpCBB5KbU6snbgAzkBKNWWJVrvuoRoLHRD5BkQSwL5HWNW2qgwTQ5pzD4ey3QyDvzR8HMTHxer6fOs/BydeTKZ94DYCoi5RuZRz6NNr+M0/a59AZCKB55ZdeYHoZ26RrCzIv1/qb8UGJeVOcJpgRMCPOxyiabCWPgTQ4yFYHYjZ8ePmaGMuKWA/C4zGFuHhTam9Re3K5k0n6JoHb1HVB/1ZJA9YBoXT4H1vSqyUqkxzazlV1oWALFtSH1SUv8CE/37HV+158TM">\n<input name="MD" type="hidden" value="406063-B35F170D92CB9E1E">\n<input name="TermUrl" type="hidden" value="https://test.3ds.payment.ru/cgi-bin/cgi_link">\n</FORM>\n<SCRIPT>\nfunction OnLoadEvent ()\n{\n  document.forms[0].submit();\n}\n</SCRIPT>\n</BODY>\n</HTML>',
+          paReq: fakePaReq,
+
           transactionStatus: 'HOLD_3DS_WAITING',
         },
       }),

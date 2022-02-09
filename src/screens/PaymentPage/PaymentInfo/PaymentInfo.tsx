@@ -1,7 +1,7 @@
 import React from 'react';
 import {Span} from '@a3/frontkit';
 import {usePFInfo} from '@/context';
-import {Section} from '../styles';
+import {Section} from '@/layouts';
 
 export function PaymentInfo() {
   const {totalAmount, description} = usePFInfo();
@@ -13,7 +13,7 @@ export function PaymentInfo() {
       })
     : '';
   return (
-    <Section>
+    <Section withBackward css={{borderRight: '1px var(--color-border) solid'}}>
       <Span>К оплате {total}</Span>
       <Span>{description}</Span>
 

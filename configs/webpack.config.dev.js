@@ -26,7 +26,6 @@ module.exports = (env, argv) => {
       chunkFilename: 'static/js/[name].chunk.js',
       publicPath: '/',
       assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
-      clean: true,
     },
 
     module: {
@@ -88,7 +87,7 @@ module.exports = (env, argv) => {
         inject: true,
         hash: true,
         chunksSortMode: 'none',
-        version: VERSION
+        version: VERSION,
       }),
 
       // new webpack.ProvidePlugin({
@@ -104,9 +103,7 @@ module.exports = (env, argv) => {
       new WebpackBar({name: appName}),
       new ReactRefreshWebpackPlugin(),
       new CopyWebpackPlugin({
-        patterns: [
-          {from: 'src/mockServiceWorker.js', to: 'dist/mockServiceWorker.js'},
-        ],
+        patterns: [{from: 'src/mockServiceWorker.js', to: 'dist/mockServiceWorker.js'}],
       }),
     ],
     devServer: {
@@ -124,14 +121,18 @@ module.exports = (env, argv) => {
 
       port: PORT,
       historyApiFallback: true,
-      proxy:
-        {
-          '/v1': {
-            target: 'http://fenix-pf-api-service.hakubdev.a-3.ru',
-            changeOrigin: true,
-            secure: false
-          }
+      proxy: {
+        '/v1': {
+          target: 'http://payment-dev.a-3.ru',
+          changeOrigin: true,
+          secure: false,
         },
+        '/v1/processing': {
+          target: 'http://payment-dev.a-3.ru',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
     },
   });
 };

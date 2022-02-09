@@ -7,7 +7,18 @@ export async function getPaReq(transactionId: number) {
   } catch (error) {}
 }
 
-export async function paymentProcess(paymentData: any, options?: IRequestConfig) {
+export type TPaymentResponse = {
+  code: number;
+  data: {
+    channel?: number;
+    paReq?: string;
+    result?: "THREE_DS" | "SUCCESS" | "FAIL";
+    transactionId?: string;
+    transactionStatus?: string;
+  }
+}
+
+export async function paymentProcess(paymentData: any, options?: IRequestConfig): Promise<TPaymentResponse> {
   try {
     const response = await apiClient('/v1/processing/pay', {
       body: paymentData,
@@ -15,7 +26,6 @@ export async function paymentProcess(paymentData: any, options?: IRequestConfig)
     });
     return response;
   } catch (error) {
-    console.error('pay error catch', error);
     throw new Response('Payment process error', {status: 400, statusText: 'Payment error'});
   }
 }

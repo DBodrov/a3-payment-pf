@@ -5,4 +5,5 @@ export * from './PaymentPage';
 export * from './ErrorFallback';
 // export * from './PayResultPage';
 export * from './PaySuccessPage';
+export * from './PayFailPage';
 export * from './CardPage';

@@ -3,7 +3,7 @@ export type TPaymentParams = {
 };
 
 export type PaymentFunction = (params: TPaymentParams) => void;
-export type CardPaymentFunction = (cardPaymentParams: any) => void;
+export type CardPaymentFunction = (cardPaymentParams: IPaymentData) => void;
 
 export type TBaseCardPaymentMethod = {
   type: google.payments.api.PaymentMethodType;
@@ -11,17 +11,21 @@ export type TBaseCardPaymentMethod = {
 };
 
 export type TPaymentContext = {
-  isComplete: boolean;
-  isLoading: boolean;
-  isPaymentsAvailable: boolean;
-  showGooglePayButton: boolean;
-  googlePayStatus: 'idle' | 'loading' | 'success' | 'error' | 'started' | 'complete' | 'canceled';
-  addGooglePayButton: (container: HTMLElement) => void;
-  makeGooglePayment: PaymentFunction;
+  // isComplete: boolean;
+  // isLoading: boolean;
+  // isPaymentsAvailable: boolean;
+  // showGooglePayButton: boolean;
+  // googlePayStatus: 'idle' | 'loading' | 'success' | 'error' | 'started' | 'complete' | 'canceled';
+  // addGooglePayButton: (container: HTMLElement) => void;
+  // makeGooglePayment: PaymentFunction;
   makeCardPayment: CardPaymentFunction;
-  transactionResult: '' | 'THREE_DS' | 'SUCCESS' | 'FAIL';
-  uiMessage?: string;
-  paReq: string;
+  transactionResult?: 'THREE_DS' | 'SUCCESS' | 'FAIL';
+  transactionId?: string;
+  setCardPayState: (cardPayState: any) => void;
+  // uiMessage?: string;
+  paReq?: string;
+  cardSubmitting: boolean;
+  cardSubmitted: boolean;
 };
 
 export type TGooglePayState = {
@@ -71,6 +75,8 @@ export interface IPaymentData {
   paymentType: 'AP' | 'GP' | 'CARD';
   transactionId?: string | null;
   prId: number;
+  amount: number;
+  description?: string;
   returnUrl: string;
   payToken?: any;
   payCard?: any;

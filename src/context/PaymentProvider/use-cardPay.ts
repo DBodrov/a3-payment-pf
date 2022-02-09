@@ -1,39 +1,29 @@
 import React from 'react';
-import {paymentProcess} from '@/api';
+import {useMutation} from 'react-query';
+import {paymentProcess, TPaymentResponse} from '@/api';
 
-type TCardPayState = {
-  status: 'idle' | 'pending' | 'resolved' | 'rejected';
-  transactionResult: '' | 'THREE_DS' | 'SUCCESS' | 'FAIL';
-  paReq: string;
-};
-
-const initCardPayState: TCardPayState = {
-  status: 'idle',
-  transactionResult: '',
+const initCardPayState: Partial<TPaymentResponse['data']> = {
   paReq: '',
 };
 
-const cardPayReducer = (state: TCardPayState, changes: Partial<TCardPayState>) => ({...state, ...changes});
-
 export function useCardPay() {
-  const [{status, transactionResult, paReq}, dispatch] = React.useReducer(cardPayReducer, initCardPayState);
-
-  const handleSubmitCardForm = React.useCallback(async (paymentData: any) => {
-    try {
-      dispatch({status: 'pending'});
-      const paymentResult = await paymentProcess(paymentData);
-
-      if (paymentResult.data.result === 'THREE_DS') {
-        dispatch({status: 'resolved', transactionResult: 'THREE_DS', paReq: paymentResult.data.paReq});
-      }
-    } catch (error) {}
-  }, []);
+  const [{paReq, result, transactionId}, dispatch] = React.useReducer(
+    (s: TPaymentResponse['data'], a: Partial<TPaymentResponse['data']>) => ({...s, ...a}),
+    initCardPayState,
+  );
+  const mutateBankResponse = useMutation(paymentProcess, {
+    useErrorBoundary: true,
+    onError: error => console.error('error ', error),
+    onSuccess: data => {
+      dispatch({paReq: data.data.paReq, result: data.data.result, transactionId: data.data.transactionId});
+    },
+  });
 
   return {
-    status,
-    isLoading: status === 'pending',
-    transactionResult,
-    handleSubmitCardForm,
-    paReq
-  }
+    paReq,
+    result,
+    transactionId,
+    mutateBankResponse,
+    setCardPayState: dispatch
+  };
 }

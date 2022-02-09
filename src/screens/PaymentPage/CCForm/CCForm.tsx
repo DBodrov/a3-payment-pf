@@ -1,6 +1,9 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {Checkbox, Button} from '@a3/frontkit';
+import {useMutation} from 'react-query';
+import {Checkbox, Button, Loader} from '@a3/frontkit';
+import {paymentProcess} from '@/api';
+import {usePayment} from '@/context';
 import {PaymentSystem} from './PaymentLogos';
 import {CCNumberInput, CCNameInput, CCExpInput, CSCCodeInput} from './components';
 import {useCCForm} from './use-ccform';
@@ -20,6 +23,7 @@ export function CCForm() {
     formIsValid,
     submitCardForm,
   } = useCCForm();
+  const {cardSubmitted, cardSubmitting} = usePayment();
   const ccNumberRef = React.useRef<HTMLInputElement>(null);
   const cscCodeRef = React.useRef<HTMLInputElement>(null);
 
@@ -126,14 +130,25 @@ export function CCForm() {
         </Checkbox>
       </FormField>
       <FormField>
-          <Button
-            type="submit"
-            css={{height: '3rem', width: 250}}
-            variant="primary"
-            disabled={!formIsValid()}>
-            Оплатить
-          </Button>
-
+        <Button
+          type="submit"
+          css={{height: '3rem', width: 250, justifyContent: cardSubmitting ? 'flex-start' : 'center'}}
+          variant="primary"
+          disabled={!formIsValid() || cardSubmitting}>
+          {cardSubmitting ? (
+            <>
+              <Loader
+                css={{
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'flex-start',
+                }}></Loader>
+              <span css={{margin: 'auto'}}>Отправка...</span>
+            </>
+          ) : (
+            'Оплатить'
+          )}
+        </Button>
       </FormField>
 
       {/* <PaymentSystem system={getPaymentSystem(values.ccNumber)} /> */}
@@ -145,8 +160,7 @@ export function CCForm() {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '30px 0',
-        }}>
-      </section>
+        }}></section>
     </Form>
   );
 }

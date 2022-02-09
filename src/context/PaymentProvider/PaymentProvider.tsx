@@ -1,6 +1,4 @@
 import React from 'react';
-import {useApplePay} from './use-applePay';
-import {useGooglePay} from './use-googlePay';
 import {useCardPay} from './use-cardPay';
 import type {TPaymentContext} from './types';
 
@@ -8,51 +6,33 @@ const PaymentContext = React.createContext<TPaymentContext | undefined>(undefine
 PaymentContext.displayName = 'PaymentContext';
 
 export function PaymentProvider({children}: {children: React.ReactNode}) {
-  const {isComplete, isPaymentsAvailable} = useApplePay();
-  const {
-    showGooglePayButton,
-    status: googlePayStatus,
-    isLoading: isGooglePayLoading,
-    addGooglePayButton,
-    makeGooglePayment,
-  } = useGooglePay();
+  //  const {isComplete, isPaymentsAvailable} = useApplePay();
+  // const {
+  //   showGooglePayButton,
+  //   status: googlePayStatus,
+  //   isLoading: isGooglePayLoading,
+  //   addGooglePayButton,
+  //   makeGooglePayment,
+  // } = useGooglePay();
 
-  const {
-    handleSubmitCardForm,
-    status: cardPayStatus,
-    transactionResult,
-    isLoading: cardPaymentIsLoading,
-    paReq,
-  } = useCardPay();
+  const {mutateBankResponse, paReq, result, setCardPayState} = useCardPay();
+  const {isLoading: cardSubmitting, isSuccess: cardSubmitted} = mutateBankResponse;
 
   const ctx = React.useMemo<TPaymentContext>(
     () => ({
-      isComplete,
-      isLoading: isGooglePayLoading || cardPaymentIsLoading,
-      uiMessage: '',
-      isPaymentsAvailable,
-      showGooglePayButton,
-      googlePayStatus,
-      addGooglePayButton,
-      makeGooglePayment,
-      makeCardPayment: handleSubmitCardForm,
-      transactionResult,
-      paReq,
+      cardSubmitted,
+      cardSubmitting,
+      makeCardPayment: mutateBankResponse.mutate,
+      transactionResult: result,
+      paReq: paReq,
+      setCardPayState,
     }),
-    [
-      addGooglePayButton,
-      cardPaymentIsLoading,
-      googlePayStatus,
-      handleSubmitCardForm,
-      isComplete,
-      isGooglePayLoading,
-      isPaymentsAvailable,
-      makeGooglePayment,
-      paReq,
-      showGooglePayButton,
-      transactionResult,
-    ],
+    [cardSubmitted, cardSubmitting, mutateBankResponse.mutate, paReq, result, setCardPayState],
   );
+
+  // if (cardPaymentIsLoading) {
+  //   return <Loader />;
+  // }
 
   return <PaymentContext.Provider value={ctx}>{children}</PaymentContext.Provider>;
 }
