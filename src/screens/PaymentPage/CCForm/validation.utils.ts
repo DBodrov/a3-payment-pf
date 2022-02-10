@@ -60,9 +60,9 @@ export function ccExpValidation(date: string) {
   return Promise.reject({message: 'Неправильная дата'});
 }
 
-export function cscValidation(csc: string) {
+export function cscValidation(csc?: string) {
   const lengthMessage = 'Код должен быть не менее 3 символов';
-  if (!csc || csc.length < 3) {
+  if (csc && csc.length < 3) {
     return Promise.reject({message: lengthMessage});
   }
   return Promise.resolve();

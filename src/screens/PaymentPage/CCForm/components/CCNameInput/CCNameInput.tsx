@@ -90,7 +90,6 @@ export function CCNameInput(props: ICCInputProps) {
   return (
     <Input
       type="text"
-      css={{width: '70%'}}
       placeholder="Владелец карты"
       name="ccName"
       tabIndex={0}

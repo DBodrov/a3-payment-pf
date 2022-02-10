@@ -15,7 +15,7 @@ export function useCardPay() {
     useErrorBoundary: true,
     onError: error => console.error('error ', error),
     onSuccess: data => {
-      dispatch({paReq: data.data.paReq, result: data.data.result, transactionId: data.data.transactionId});
+      dispatch({paReq: data.data?.paReq || '', result: data.data.result, transactionId: data.data.transactionId});
     },
   });
 

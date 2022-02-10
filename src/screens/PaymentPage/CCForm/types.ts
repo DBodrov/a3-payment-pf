@@ -26,16 +26,13 @@ export const initCCFormValues = {
 
 export const initErrorState = {
   ccNumber: '',
-  ccName: '',
   ccExp: '',
   cvc: '',
 };
 
 export const initTouchedState = {
   ccNumber: false,
-  ccName: false,
   ccExp: false,
-  cvc: false,
 };
 
 export const initCCFormState: TFormState = {

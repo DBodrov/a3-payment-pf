@@ -1,13 +1,9 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {useMutation} from 'react-query';
 import {Checkbox, Button, Loader} from '@a3/frontkit';
-import {paymentProcess} from '@/api';
 import {usePayment} from '@/context';
-import {PaymentSystem} from './PaymentLogos';
 import {CCNumberInput, CCNameInput, CCExpInput, CSCCodeInput} from './components';
 import {useCCForm} from './use-ccform';
-import {getPaymentSystem} from './utils';
 import {Form, FormField, Label} from './styles';
 import {TFieldName} from './types';
 
@@ -16,14 +12,13 @@ export function CCForm() {
     validateCCNField,
     validateCCExpField,
     validateCSCField,
-    validateRequiredField,
     values,
     error,
     dispatch,
     formIsValid,
     submitCardForm,
   } = useCCForm();
-  const {cardSubmitted, cardSubmitting} = usePayment();
+  const {cardSubmitting} = usePayment();
   const ccNumberRef = React.useRef<HTMLInputElement>(null);
   const cscCodeRef = React.useRef<HTMLInputElement>(null);
 
@@ -53,11 +48,11 @@ export function CCForm() {
     submitCardForm();
   };
 
-  const hasError = (fieldName: Exclude<TFieldName, 'isAgree'>) => {
+  const hasError = (fieldName: Exclude<TFieldName, 'isAgree' | 'ccName'>) => {
     return Boolean(error[fieldName]);
   };
 
-  const applyBorderStyle = (field: Exclude<TFieldName, 'isAgree'>) =>
+  const applyBorderStyle = (field: Exclude<TFieldName, 'isAgree' | 'ccName'>) =>
     css({
       border: `1px ${hasError(field) ? 'var(--color-error)' : 'var(--color-border)'} solid`,
       '&:hover, &:focus': {
@@ -83,7 +78,7 @@ export function CCForm() {
         />
       </FormField>
       <div css={{display: 'flex', flexFlow: 'row nowrap', gap: 8, width: '100%'}}>
-        <FormField css={{width: '80%'}}>
+        <FormField css={{width: '60%'}}>
           <Label htmlFor="ccExp">Действительна до</Label>
           <CCExpInput
             id="ccExp"
@@ -93,7 +88,7 @@ export function CCForm() {
             onBlur={() => validateCCExpField()}
           />
         </FormField>
-        <FormField css={{width: '20%'}}>
+        <FormField css={{width: '40%'}}>
           <Label htmlFor="cvc">Код</Label>
           <CSCCodeInput
             id="cvc"
@@ -107,13 +102,7 @@ export function CCForm() {
       </div>
       <FormField>
         <Label htmlFor="ccName">Владелец карты</Label>
-        <CCNameInput
-          id="ccName"
-          css={applyBorderStyle('ccName')}
-          onChange={handleChangeCardholder}
-          value={values.ccName}
-          onBlur={() => validateRequiredField('ccName')}
-        />
+        <CCNameInput id="ccName" onChange={handleChangeCardholder} value={values.ccName} />
       </FormField>
       <FormField>
         <Checkbox name="termsAgreement" checked={values.isAgree} onChange={handleChangeAgreement}>
@@ -129,7 +118,7 @@ export function CCForm() {
           </span>
         </Checkbox>
       </FormField>
-      <FormField>
+      <FormField css={{alignItems: 'center'}}>
         <Button
           type="submit"
           css={{height: '3rem', width: 250, justifyContent: cardSubmitting ? 'flex-start' : 'center'}}
@@ -137,13 +126,7 @@ export function CCForm() {
           disabled={!formIsValid() || cardSubmitting}>
           {cardSubmitting ? (
             <>
-              <Loader
-                css={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'flex-start',
-                }}></Loader>
-              <span css={{margin: 'auto'}}>Отправка...</span>
+              <Loader css={{width: '100%', height: '100%'}} />
             </>
           ) : (
             'Оплатить'

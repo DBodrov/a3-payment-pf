@@ -20,7 +20,7 @@ export const configHandlers = [
           config: {
             homeUrl: 'https://rosfines.ru',
             logo: 'https://rosfines.ru/themes/custom/rosfines/favicon.ico',
-            companyName: 'РосШтрафы'
+            companyName: 'РосШтрафы',
           },
         },
       }),
@@ -80,13 +80,20 @@ const fakePaReq = `
 </html>
 `;
 
-export function redirect(destination, statusCode) {
-  return (res) => {
-    res.status = statusCode
-    res.headers.set('Location', destination)
-    return res
-  }
-}
+
+const mockData3DS = {
+  transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65560',
+  result: 'THREE_DS',
+  paReq: fakePaReq,
+  transactionStatus: 'HOLD_3DS_WAITING',
+};
+
+const mockDataNo3DS = {
+  paReq: null,
+  result: 'SUCCESS',
+  transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65129',
+  transactionStatus: 'DEBITED',
+};
 
 export const paymentHandlers = [
   rest.post('/v1/processing/pay', (req, res, ctx) => {
@@ -94,13 +101,7 @@ export const paymentHandlers = [
       ctx.status(200),
       ctx.json({
         code: 200,
-        data: {
-          transactionId: '98fb1f7d-674a-4745-a3e4-53ef92e65560',
-          result: 'THREE_DS',
-          paReq: fakePaReq,
-
-          transactionStatus: 'HOLD_3DS_WAITING',
-        },
+        data: mockDataNo3DS
       }),
     );
   }),

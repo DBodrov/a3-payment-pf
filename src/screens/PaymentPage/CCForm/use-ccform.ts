@@ -1,6 +1,4 @@
 import React from 'react';
-import {useMutation, useQueryClient} from 'react-query';
-import {paymentProcess} from '@/api';
 import {usePFInfo, usePayment} from '@/context';
 import {IPaymentData} from '@/context/PaymentProvider/types';
 import {isEmptyString, onlyDigit} from '@/utils/string.utils';
