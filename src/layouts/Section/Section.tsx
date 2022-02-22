@@ -1,6 +1,7 @@
 import React from 'react';
+import {usePayment} from '@/context';
 import {Span} from '@a3/frontkit';
-import {usePFInfo} from '@/context';
+
 import {ArrowIcon} from '@/assets/icons';
 import {StyledSection} from './styles';
 import {isEmptyString} from '@/utils/string.utils';
@@ -8,11 +9,12 @@ import {isEmptyString} from '@/utils/string.utils';
 type TProps = {
   children: React.ReactNode;
   withBackward?: boolean;
+  transactionId?: string;
 };
 
 function LinkBackward() {
-  const {config} = usePFInfo();
-  const {homeUrl = '', logo = '', companyName = ''} = config;
+  const {info: {config}} = usePayment();
+  const {companyName = '', homeUrl = '', logo = ''} = config;
 
   if (isEmptyString(homeUrl)) {
     return null;

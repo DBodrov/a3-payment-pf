@@ -1,10 +1,13 @@
 import React from 'react';
-import {Page} from '@/layouts';
+import {H1} from '@a3/frontkit';
+import {StyledPage, StatusBlock} from './styles';
 
 export function PayFailPage() {
   return (
-    <Page>
-      <h3>FAIL</h3>
-    </Page>
+    <StyledPage>
+      <StatusBlock>
+        <H1>Оплата не прошла</H1>
+      </StatusBlock>
+    </StyledPage>
   );
 }

@@ -1,20 +1,16 @@
 import React from 'react';
-import {Screen} from '@/layouts';
-import {PaymentProvider, PFInfoProvider, AppErrorBoundary} from '@/context';
+import {Footer, PageLayout} from '@/layouts';
 import {PaymentInfo} from './PaymentInfo';
 import {PaySection} from './PaySection';
 
 export function PaymentPage() {
   return (
-    <AppErrorBoundary>
-      <Screen>
-        <PFInfoProvider>
-          <PaymentInfo />
-          <PaymentProvider>
-            <PaySection />
-          </PaymentProvider>
-        </PFInfoProvider>
-      </Screen>
-    </AppErrorBoundary>
+    <div css={{display: 'flex', flexFlow: 'column nowrap'}}>
+      <PageLayout>
+        <PaymentInfo />
+        <PaySection />
+      </PageLayout>
+      <Footer />
+    </div>
   );
 }

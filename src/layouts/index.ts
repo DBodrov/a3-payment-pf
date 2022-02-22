@@ -1,3 +1,6 @@
 // export * from './TNSLayout';
-export * from './Page';
+export * from './PageLayout';
 export * from './Section';
+export * from './Footer';
+
+export * from './AppContainer';

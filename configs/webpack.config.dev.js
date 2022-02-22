@@ -123,12 +123,12 @@ module.exports = (env, argv) => {
       historyApiFallback: true,
       proxy: {
         '/v1': {
-          target: 'http://payment-dev.a-3.ru',
+          target: 'https://payment-dev.a-3.ru',
           changeOrigin: true,
           secure: false,
         },
         '/v1/processing': {
-          target: 'http://payment-dev.a-3.ru',
+          target: 'https://payment-dev.a-3.ru',
           changeOrigin: true,
           secure: false,
         },

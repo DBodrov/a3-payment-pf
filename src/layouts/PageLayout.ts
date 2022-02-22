@@ -32,6 +32,7 @@ export const ViewCard = styled.article`
 `;
 
 export const Screen = styled.main`
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(425px, 1fr));
   grid-template-rows: 1fr;
@@ -39,6 +40,32 @@ export const Screen = styled.main`
   height: 100%;
 
   @media (max-width: 768px) {
-
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 `
+export const PageLayout = styled.main`
+  position: relative;
+  @media (min-width: 768px) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 460px;
+    margin: auto;
+    padding-top: 1rem;
+
+  }
+  @media (min-width: 992px) {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 920px;
+    margin: auto;
+    padding-top: 2rem;
+  }
+
+`;

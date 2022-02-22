@@ -46,3 +46,12 @@ export const maxLengthString = (value: string, length: number) => {
 };
 
 export const zeroPad = (value: number | string, length: number): string => `${value}`.padStart(length, '0');
+
+export const toCurrency = (value: number, locale: string = 'ru', currency: string = 'RUB') => {
+  if (!isFinite(value)) return value;
+  return value.toLocaleString(locale, {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'symbol',
+  })
+}

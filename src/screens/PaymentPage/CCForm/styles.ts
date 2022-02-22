@@ -9,7 +9,6 @@ export const Form = styled.form`
   max-width: 704px;
   height: 100%;
   position: relative;
-  padding: 30px 0;
 `;
 
 const Card = styled.div`

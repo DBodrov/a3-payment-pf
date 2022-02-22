@@ -135,15 +135,6 @@ export function CCForm() {
       </FormField>
 
       {/* <PaymentSystem system={getPaymentSystem(values.ccNumber)} /> */}
-
-      <section
-        css={{
-          display: 'flex',
-          flexFlow: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '30px 0',
-        }}></section>
     </Form>
   );
 }

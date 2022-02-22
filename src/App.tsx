@@ -1,21 +1,18 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
-import {PaymentPage, NotFound, PaySuccessPage, PayFailPage} from '@/screens';
+import {PaymentPage, NotFound, PaySuccessPage, PayFailPage, ThreeDSPage} from '@/screens';
+import {AppContainer} from '@/layouts';
 
 export function App() {
   return (
     <Routes>
-      <Route path=":orderId" element={<PaymentPage />}>
-        {/* <Route index element={<Checkout />} /> */}
-        {/* <Route path="payment" element={<Payment />} /> */}
-        {/* <Route path="card" element={<Card />} /> */}
-        {/* <Route path="success" element={<PaySuccessPage />} /> */}
+      <Route path=":transactionId" element={<AppContainer />}>
+        <Route index element={<PaymentPage />} />
+        <Route path="threeds" element={<ThreeDSPage />} />
+        <Route path="success" element={<PaySuccessPage />} />
+        <Route path="fail" element={<PayFailPage />} />
       </Route>
-      <Route path="success" element={<PaySuccessPage />} />
-      <Route path="fail" element={<PayFailPage />} />
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="result" element={<PayResultPage />} />
-      <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }

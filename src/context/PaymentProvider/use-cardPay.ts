@@ -1,29 +1,21 @@
-import React from 'react';
-import {useMutation} from 'react-query';
-import {paymentProcess, TPaymentResponse} from '@/api';
-
-const initCardPayState: Partial<TPaymentResponse['data']> = {
-  paReq: '',
-};
+import {useMutation, useQueryClient} from 'react-query';
+import {paymentProcess} from '@/api';
 
 export function useCardPay() {
-  const [{paReq, result, transactionId}, dispatch] = React.useReducer(
-    (s: TPaymentResponse['data'], a: Partial<TPaymentResponse['data']>) => ({...s, ...a}),
-    initCardPayState,
-  );
+  const queryClient = useQueryClient();
   const mutateBankResponse = useMutation(paymentProcess, {
     useErrorBoundary: true,
     onError: error => console.error('error ', error),
-    onSuccess: data => {
-      dispatch({paReq: data.data?.paReq || '', result: data.data.result, transactionId: data.data.transactionId});
+    onSuccess: async data => {
+      const transactionId = data?.data?.transactionId;
+      queryClient.invalidateQueries(['payment status', transactionId]);
     },
   });
 
+  const {mutate, ...mutateCardDataInfo} = mutateBankResponse;
+
   return {
-    paReq,
-    result,
-    transactionId,
-    mutateBankResponse,
-    setCardPayState: dispatch
+    mutate,
+    ...mutateCardDataInfo
   };
 }

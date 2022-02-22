@@ -37,8 +37,7 @@ export const appStyles = css(
       fontSize: '16px',
       color: 'var(--color-text)',
       backgroundColor: 'var(--color-background)',
-      overflow: 'hidden',
     },
-    '#root': {width: '100%', height: '100%'},
+    '#root': {width: '100%', height: '100%', overflow: 'auto'},
   },
 );

@@ -7,3 +7,4 @@ export * from './ErrorFallback';
 export * from './PaySuccessPage';
 export * from './PayFailPage';
 export * from './CardPage';
+export * from './ThreeDSPage';

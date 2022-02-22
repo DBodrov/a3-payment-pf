@@ -1,3 +1,18 @@
+type TClientConfig = {
+  homeUrl?: string;
+  logo?: string;
+  companyName?: string;
+};
+export interface IPFInfo {
+  config: TClientConfig;
+  transactionId?: string;
+  description?: string;
+  amount: number;
+  fee: number;
+  totalAmount: number;
+  prId: number;
+}
+
 export type TPaymentParams = {
   amount: number;
 };
@@ -10,6 +25,31 @@ export type TBaseCardPaymentMethod = {
   parameters: google.payments.api.CardParameters;
 };
 
+export type TTransactionStatus =
+  | 'DEBIT_ACCEPTED'
+  | 'DEBIT_SENT'
+  | 'DEBIT_RETRY'
+  | 'DEBITED'
+  | 'DEBIT_REFUSED'
+  | 'DEBIT_ERROR'
+  | 'DEBIT_IMPOSSIBLE'
+  | 'HOLD_3DS_WAITING'
+  | 'HOLD_3DS_TIMEOUT'
+  | 'HOLD_ACCEPTED'
+  | 'HOLD_3DS_WAITING'
+  | 'DEBIT_CHECKING'
+  | 'DEBIT_CHECK_ERROR'
+  | 'DEBIT_3DS_WAITING'
+  | 'HOLD_CANCEL'
+  | 'HOLD_ERROR'
+  | 'CANCEL_ACCEPTED'
+  | 'CANCEL_HOLD'
+  | 'CANCEL_SENT'
+  | 'CANCELED'
+  | 'NOT_CANCELED'
+  | 'CANCEL_IMPOSSIBLE'
+  | 'CANCEL_ERROR';
+
 export type TPaymentContext = {
   // isComplete: boolean;
   // isLoading: boolean;
@@ -18,14 +58,16 @@ export type TPaymentContext = {
   // googlePayStatus: 'idle' | 'loading' | 'success' | 'error' | 'started' | 'complete' | 'canceled';
   // addGooglePayButton: (container: HTMLElement) => void;
   // makeGooglePayment: PaymentFunction;
+  // transactionResult?: 'THREE_DS' | 'SUCCESS' | 'FAIL';
   makeCardPayment: CardPaymentFunction;
-  transactionResult?: 'THREE_DS' | 'SUCCESS' | 'FAIL';
+  transactionStatus?: TTransactionStatus;
   transactionId?: string;
-  setCardPayState: (cardPayState: any) => void;
+  // resetCardPayState: () => void;
   // uiMessage?: string;
-  paReq?: string;
+  paReq?: string | null;
   cardSubmitting: boolean;
   cardSubmitted: boolean;
+  info: IPFInfo;
 };
 
 export type TGooglePayState = {
@@ -49,7 +91,6 @@ export type TGooglePayState = {
 //   "prId": 0
 // }
 
-
 // {
 //   "payCard": {
 //       "card": "",
@@ -66,10 +107,7 @@ export type TGooglePayState = {
 //   "prId": 0
 // }
 
-
 // type TGooglePayData  = google.payments.api.PaymentData;
-
-
 
 export interface IPaymentData {
   paymentType: 'AP' | 'GP' | 'CARD';
@@ -77,7 +115,6 @@ export interface IPaymentData {
   prId: number;
   amount: number;
   description?: string;
-  returnUrl: string;
   payToken?: any;
   payCard?: any;
 }

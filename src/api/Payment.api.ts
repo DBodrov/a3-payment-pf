@@ -1,20 +1,15 @@
+import type {TTransactionStatus} from '@/context/PaymentProvider/types';
 import {apiClient, IRequestConfig} from './api-client';
 
-export async function getPaReq(transactionId: number) {
-  try {
-    const response = await apiClient('/api/pareq', {body: {transactionId}});
-    return response;
-  } catch (error) {}
-}
 
 export type TPaymentResponse = {
   code: number;
   data: {
     channel?: number;
-    paReq?: string;
+    paReq?: string | null;
     result?: "THREE_DS" | "SUCCESS" | "FAIL";
     transactionId?: string;
-    transactionStatus?: string;
+    transactionStatus?: TTransactionStatus;
   }
 }
 
@@ -27,6 +22,16 @@ export async function paymentProcess(paymentData: any, options?: IRequestConfig)
     return response;
   } catch (error) {
     throw new Response('Payment process error', {status: 400, statusText: 'Payment error'});
+  }
+}
+
+
+export async function getPaymentStatus(transactionId: string): Promise<TPaymentResponse> {
+  try {
+    const response = await apiClient(`/v1/processing/pay?transactionId=${transactionId}`);
+    return response;
+  } catch (error) {
+    throw new Response('Payment status', {status: 400, statusText: 'Payment status error'});
   }
 }
 

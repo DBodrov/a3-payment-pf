@@ -1,5 +1,5 @@
 import React from 'react';
-import {usePFInfo, usePayment} from '@/context';
+import {usePayment} from '@/context';
 import {IPaymentData} from '@/context/PaymentProvider/types';
 import {isEmptyString, onlyDigit} from '@/utils/string.utils';
 import {requiredFieldValidator, ccnValidation, ccExpValidation, cscValidation} from './validation.utils';
@@ -50,12 +50,8 @@ const clearErrorAction = (fieldName: TFieldName): IFormChanges => ({
 
 export function useCCForm() {
   const [{error, touched, values}, dispatch] = React.useReducer(formStateReducer, initCCFormState);
-  const {totalAmount, transactionId, description, prId} = usePFInfo();
-  const {makeCardPayment} = usePayment();
-  // const mutation = useMutation(paymentProcess, {useErrorBoundary: true});
-  // const queryClient = useQueryClient();
-
-  // const amount = Number(queryParams?.get('_SUM'));
+  const {makeCardPayment, info} = usePayment();
+  const {totalAmount, transactionId, description, prId} = info;
 
   const validateRequiredField = React.useCallback(
     async (fieldName: TFieldName) => {
@@ -172,20 +168,8 @@ export function useCCForm() {
       paymentType: 'CARD',
       transactionId,
       prId,
-      returnUrl: 'https://sbp-psb-dev.a-3.ru/psb/result'
-      // returnUrl: `${window.location.origin}/v1/processing/result`,
     };
-
     makeCardPayment(paymentData);
-
-    // mutation.mutate(paymentData, {
-    //   onError: error => console.log('error', error),
-    //   onSuccess: data => {
-    //     console.log('success', data);
-    //     queryClient.setQueryData('bankResponse', {bankRes: data.data});
-    //   },
-    // });
-
   }, [description, makeCardPayment, prId, totalAmount, transactionId, values]);
 
   return {
