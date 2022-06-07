@@ -1,5 +1,5 @@
 import React, {StrictMode} from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {Global} from '@emotion/react';
 import {AppProviders} from '@/context';
 import {initSentry} from '@/utils/use-sentry';
@@ -20,14 +20,15 @@ function addVersion() {
   body.setAttribute('data-version', process.env.VERSION!);
 }
 
+const container = document.getElementById('root');
+const root = createRoot(container as HTMLElement);
 
-ReactDOM.render(
+root.render(
   <StrictMode>
     <Global styles={appStyles} />
     <AppProviders>
       <App />
     </AppProviders>
-  </StrictMode>,
-  document.getElementById('root'),
+  </StrictMode>
 );
 
