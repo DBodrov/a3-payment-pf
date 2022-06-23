@@ -61,10 +61,6 @@ export function CCForm() {
       },
     });
 
-  React.useEffect(() => {
-    ccNumberRef?.current?.focus();
-  }, []);
-
   return (
     <Form onSubmit={handlePaymentSubmit}>
       <CardsGroup>

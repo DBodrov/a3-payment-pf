@@ -83,7 +83,7 @@ export function CCNameInput(props: ICCInputProps) {
     inputType.current = 'insertFromPaste';
   }, []);
 
-  React.useLayoutEffect(() => {
+  React.useInsertionEffect(() => {
     inputRef?.current?.setSelectionRange(cursorStart, cursorEnd);
   }, [cursorStart, cursorEnd, updateKey]);
 
@@ -99,6 +99,7 @@ export function CCNameInput(props: ICCInputProps) {
       onPaste={handlePaste}
       ref={inputRef}
       autoComplete="cc-name"
+      css={{height: 40, borderRadius: 12, backgroundColor: 'var(--color-background-secondary)'}}
       {...restProps}
     />
   );

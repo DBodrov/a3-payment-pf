@@ -34,7 +34,7 @@ export const appStyles = css(
       width: '100vw',
       height: '100vh',
       fontFamily: 'Lato, sans-serif',
-      fontSize: '16px',
+      fontSize: '14px',
       color: 'var(--color-text)',
       backgroundColor: 'var(--color-background)',
     },

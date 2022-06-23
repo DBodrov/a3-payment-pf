@@ -17,7 +17,6 @@ export function ThreeDSPage() {
       }
       if (e.data.signature === transactionId) {
         queryClient.invalidateQueries(['payment status', transactionId]);
-        // e.data.success ? navigate('../success') : navigate('../fail');
       }
     };
     window.addEventListener('message', transactionListener);
@@ -28,7 +27,7 @@ export function ThreeDSPage() {
   }, [queryClient, transactionId]);
 
   return (
-    <div css={{display: 'flex', margin: 'auto', height: '100%', maxWidth: 600}}>
+    <div css={{display: 'flex', margin: 'auto', height: '100%', width: 'auto'}}>
       {Boolean(paReq) ? (
         <iframe
           srcDoc={paReq as string}

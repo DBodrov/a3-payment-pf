@@ -49,17 +49,6 @@ export function loadScript(src: string): Promise<void> {
   return promise;
 }
 
-// function removeScript(url: string) {
-//   const scripts = document.getElementsByTagName('script');
-//   for (let script of scripts) {
-//     if (script.src === url) {
-//       console.log('remove script ', script)
-//       script.remove();
-//       cachedScripts = {};
-//     }
-//   }
-// }
-
 export function useScript(scriptUrl: string) {
   const [stateScript, setState] = React.useState('idle');
   React.useEffect(() => {

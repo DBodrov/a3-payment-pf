@@ -18,6 +18,9 @@ export const configHandlers = [
             homeUrl: 'https://rosfines.ru',
             logo: 'https://rosfines.ru/themes/custom/rosfines/favicon.ico',
             companyName: 'РосШтрафы',
+            layout: {
+              paymentSystemOrder: ['card', 'internet']
+            }
           },
         },
       }),
@@ -93,8 +96,7 @@ const mockDataNo3DS = (transactionId: string) => ({
 
 export const paymentHandlers = [
   rest.post('/v1/processing/pay', (req, res, ctx) => {
-    console.log(req.body);
-    const {transactionId} = req?.body;
+    const {transactionId} = req?.body as any;
     return res(
       ctx.status(200),
       ctx.json({
@@ -104,12 +106,12 @@ export const paymentHandlers = [
     );
   }),
   rest.get('/v1/processing/pay', (req, res, ctx) => {
-    console.log(req.body);
+    const transactionId = req.url.searchParams.get('transactionId');
     return res(
       ctx.status(200),
       ctx.json({
         code: 200,
-        data: mockData3DS(req.body['transactionId']),
+        data: {},
       }),
     );
   }),

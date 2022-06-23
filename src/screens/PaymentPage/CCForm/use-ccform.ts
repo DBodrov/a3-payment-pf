@@ -50,7 +50,7 @@ const clearErrorAction = (fieldName: TFieldName): IFormChanges => ({
 
 export function useCCForm() {
   const [{error, touched, values}, dispatch] = React.useReducer(formStateReducer, initCCFormState);
-  const {makeCardPayment, info} = usePayment();
+  const {makePayment, info, clientInfo, setPaymentType} = usePayment();
   const {totalAmount, transactionId, description, prId} = info;
 
   const validateRequiredField = React.useCallback(
@@ -112,8 +112,8 @@ export function useCCForm() {
   const formIsValid = React.useCallback(() => {
     const isAllTouched = Object.values(touched).every(Boolean);
     const noErrors = Object.values(error).every(isEmptyString);
-    return isAllTouched && noErrors && values.isAgree;
-  }, [error, touched, values.isAgree]);
+    return isAllTouched && noErrors && clientInfo?.isAgree;
+  }, [clientInfo?.isAgree, error, touched]);
 
   //   {
   //     "payCard": {
@@ -150,6 +150,7 @@ export function useCCForm() {
   //     "description": "Test"
 
   const submitCardForm = React.useCallback(() => {
+    setPaymentType('CARD');
     const {ccExp, ccName, ccNumber, cvc} = values;
     const [expMonth, expYear] = ccExp.split('/');
     const cardNumber = onlyDigit(ccNumber);
@@ -169,8 +170,8 @@ export function useCCForm() {
       transactionId,
       prId,
     };
-    makeCardPayment(paymentData);
-  }, [description, makeCardPayment, prId, totalAmount, transactionId, values]);
+    makePayment(paymentData);
+  }, [description, makePayment, prId, totalAmount, transactionId, values]);
 
   return {
     validateCCNField,

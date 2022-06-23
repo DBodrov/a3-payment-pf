@@ -1,7 +1,14 @@
+import type {TClientInfo} from './use-client-info';
+
+type TLayoutConfig = {
+  paymentSystemOrder: ['card', 'internet'];
+}
+
 type TClientConfig = {
   homeUrl?: string;
   logo?: string;
   companyName?: string;
+  layout?: TLayoutConfig
 };
 export interface IPFInfo {
   config: TClientConfig;
@@ -17,8 +24,7 @@ export type TPaymentParams = {
   amount: number;
 };
 
-export type PaymentFunction = (params: TPaymentParams) => void;
-export type CardPaymentFunction = (cardPaymentParams: IPaymentData) => void;
+export type PaymentFunction = (params: IPaymentData) => void;
 
 export type TBaseCardPaymentMethod = {
   type: google.payments.api.PaymentMethodType;
@@ -51,70 +57,25 @@ export type TTransactionStatus =
   | 'CANCEL_ERROR';
 
 export type TPaymentContext = {
-  // isComplete: boolean;
-  // isLoading: boolean;
-  // isPaymentsAvailable: boolean;
-  // showGooglePayButton: boolean;
-  // googlePayStatus: 'idle' | 'loading' | 'success' | 'error' | 'started' | 'complete' | 'canceled';
-  // addGooglePayButton: (container: HTMLElement) => void;
-  // makeGooglePayment: PaymentFunction;
-  // transactionResult?: 'THREE_DS' | 'SUCCESS' | 'FAIL';
-  makeCardPayment: CardPaymentFunction;
+  makePayment: PaymentFunction;
   transactionStatus?: TTransactionStatus;
-  transactionId?: string;
-  // resetCardPayState: () => void;
-  // uiMessage?: string;
   paReq?: string | null;
-  cardSubmitting: boolean;
-  cardSubmitted: boolean;
+  isSubmitting: boolean;
+  isSubmitted: boolean;
   info: IPFInfo;
+  clientInfo?: TClientInfo;
+  paymentType: TPaymentType | null;
+  setPaymentType: (paymentType: TPaymentType) => void;
 };
 
-export type TGooglePayState = {
-  status: TPaymentContext['googlePayStatus'];
-  showGooglePayButton: boolean;
-};
-
-// {
-//   "payToken": {
-//       "data": "",
-//       "signature": "",
-//       "version": "",
-//       "header": {
-//           "publicKeyHash": "",
-//           "ephemeralPublicKey": "",
-//           "transactionId": ""
-//       }
-//   },
-//   "paymentType": "AP",
-//   "transactionId": "",
-//   "prId": 0
-// }
-
-// {
-//   "payCard": {
-//       "card": "",
-//       "cvc2": "",
-//       "expMonth": "",
-//       "expYear": "",
-//       "carHolder": "",
-//       "email": ""
-//   },
-//   "amount": 0.0,
-//   "description": "",
-//   "paymentType": "CARD",
-//   "transactionId": "",
-//   "prId": 0
-// }
-
-// type TGooglePayData  = google.payments.api.PaymentData;
+export type TPaymentType = 'AP' | 'GP' | 'CARD' | 'YP'
 
 export interface IPaymentData {
-  paymentType: 'AP' | 'GP' | 'CARD';
+  paymentType: TPaymentType;
   transactionId?: string | null;
   prId: number;
   amount: number;
   description?: string;
-  payToken?: any;
+  encodedToken?: any;
   payCard?: any;
 }

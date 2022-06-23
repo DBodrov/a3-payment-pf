@@ -100,7 +100,7 @@ function CCNumberInputComponent(props: ICCNumberInputProps, ref: React.Forwarded
     inputType.current = 'insertFromPaste';
   }, []);
 
-  React.useLayoutEffect(() => {
+  React.useInsertionEffect(() => {
     inputRef?.current?.setSelectionRange(cursorStart, cursorEnd);
   }, [cursorStart, cursorEnd, updateKey]);
 
@@ -115,9 +115,9 @@ function CCNumberInputComponent(props: ICCNumberInputProps, ref: React.Forwarded
       ref={inputRef}
       value={value}
       placeholder="Номер карты"
-      autoFocus
       autoComplete="cc-number"
       tabIndex={0}
+      css={{height: 40, borderRadius: 12, backgroundColor: 'var(--color-background-secondary)'}}
       {...restProps}
     />
   );

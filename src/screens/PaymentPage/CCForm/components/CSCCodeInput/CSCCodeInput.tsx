@@ -129,7 +129,7 @@ function CSCCodeInputComponent(props: ICCInputProps, ref: React.ForwardedRef<HTM
     setCursor({cursorStart: start, cursorEnd: end});
   }, []);
 
-  React.useLayoutEffect(() => {
+  React.useInsertionEffect(() => {
     inputRef?.current?.setSelectionRange(cursorStart, cursorEnd);
   }, [cursorStart, cursorEnd, updateKey]);
 
@@ -146,6 +146,7 @@ function CSCCodeInputComponent(props: ICCInputProps, ref: React.ForwardedRef<HTM
       onPaste={handlePaste}
       value={displaySymbols}
       maxLength={3}
+      css={{height: 40, borderRadius: 12, backgroundColor: 'var(--color-background-secondary)'}}
       {...restProps}
     />
   );

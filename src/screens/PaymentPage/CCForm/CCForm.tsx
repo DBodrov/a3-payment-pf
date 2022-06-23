@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {Checkbox, Button, Loader} from '@a3/frontkit';
+import {Button, Loader} from '@a3/frontkit';
 import {usePayment} from '@/context';
 import {CCNumberInput, CCNameInput, CCExpInput, CSCCodeInput} from './components';
 import {useCCForm} from './use-ccform';
@@ -18,7 +18,9 @@ export function CCForm() {
     formIsValid,
     submitCardForm,
   } = useCCForm();
-  const {cardSubmitting} = usePayment();
+  const {isSubmitting, paymentType} = usePayment();
+  const cardSubmitting = paymentType === 'CARD' && isSubmitting;
+
   const ccNumberRef = React.useRef<HTMLInputElement>(null);
   const cscCodeRef = React.useRef<HTMLInputElement>(null);
 
@@ -38,31 +40,22 @@ export function CCForm() {
     dispatch({type: 'CHANGE_VALUE', fieldName: 'cvc', payload: value});
   };
 
-  const handleChangeAgreement = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.checked;
-    dispatch({type: 'CHANGE_VALUE', fieldName: 'isAgree', payload: value});
-  };
-
   const handlePaymentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     submitCardForm();
   };
 
-  const hasError = (fieldName: Exclude<TFieldName, 'isAgree' | 'ccName'>) => {
+  const hasError = (fieldName: Exclude<TFieldName, 'ccName'>) => {
     return Boolean(error[fieldName]);
   };
 
-  const applyBorderStyle = (field: Exclude<TFieldName, 'isAgree' | 'ccName'>) =>
+  const applyBorderStyle = (field: Exclude<TFieldName, 'ccName'>) =>
     css({
       border: `1px ${hasError(field) ? 'var(--color-error)' : 'var(--color-border)'} solid`,
       '&:hover, &:focus': {
         borderColor: hasError(field) ? 'var(--color-error)' : 'var(--color-primary)',
       },
     });
-
-  React.useEffect(() => {
-    ccNumberRef?.current?.focus();
-  }, []);
 
   return (
     <Form onSubmit={handlePaymentSubmit}>
@@ -104,24 +97,10 @@ export function CCForm() {
         <Label htmlFor="ccName">Владелец карты</Label>
         <CCNameInput id="ccName" onChange={handleChangeCardholder} value={values.ccName} />
       </FormField>
-      <FormField>
-        <Checkbox name="termsAgreement" checked={values.isAgree} onChange={handleChangeAgreement}>
-          <span>
-            Я подтверждаю свое согласие с{' '}
-            <a
-              href="http://a-3.ru/somepdf.pdf"
-              css={{color: 'var(--color-primary)'}}
-              target="_blank"
-              rel="noopener noreferrer">
-              правилами оказания услуг
-            </a>
-          </span>
-        </Checkbox>
-      </FormField>
-      <FormField css={{alignItems: 'center'}}>
+      <FormField css={{alignItems: 'center', marginBottom: 0}}>
         <Button
           type="submit"
-          css={{height: '3rem', width: 250, justifyContent: cardSubmitting ? 'flex-start' : 'center'}}
+          css={{height: '3rem', width: '100%', justifyContent: cardSubmitting ? 'flex-start' : 'center', borderRadius: 12}}
           variant="primary"
           disabled={!formIsValid() || cardSubmitting}>
           {cardSubmitting ? (

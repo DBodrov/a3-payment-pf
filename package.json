@@ -7,7 +7,7 @@
   "main": "src/index.tsx",
   "repository": {
     "type": "git",
-    "url": "https://git.a-3.ru/frontend/uniframe"
+    "url": "https://git.a-3.ru/frontend/payment-pf"
   },
   "scripts": {
     "build": "webpack --config configs/webpack.config.production.js",

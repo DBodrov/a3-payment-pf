@@ -1,10 +1,11 @@
 import {useMutation, useQueryClient} from 'react-query';
 import {paymentProcess} from '@/api';
 
-export function useCardPay() {
+export function usePaymentProcess() {
   const queryClient = useQueryClient();
   const mutateBankResponse = useMutation(paymentProcess, {
     useErrorBoundary: true,
+    retry: 0,
     onError: error => console.error('error ', error),
     onSuccess: async data => {
       const transactionId = data?.data?.transactionId;

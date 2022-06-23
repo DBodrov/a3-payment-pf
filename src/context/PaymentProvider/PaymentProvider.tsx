@@ -1,9 +1,10 @@
 import React from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {Loader} from '@a3/frontkit';
-import {useCardPay} from './use-cardPay';
+import {usePaymentProcess} from './use-payment-process';
 import {usePaymentQuery} from './use-payment-query';
-import type {TPaymentContext, IPFInfo} from './types';
+import {useClientInfo} from './use-client-info';
+import type {TPaymentContext, IPFInfo, TPaymentType} from './types';
 import {readTransactionStatus} from '@/screens/PaymentPage/PaySection/utils';
 
 const PaymentContext = React.createContext<TPaymentContext | undefined>(undefined);
@@ -12,15 +13,16 @@ PaymentContext.displayName = 'PaymentContext';
 export function PaymentProvider({children}: {children: React.ReactNode}) {
   const {transactionId = ''} = useParams<string>();
   const navigate = useNavigate();
+  const [paymentType, setPaymentType] = React.useState<TPaymentType | null>(null);
   const {isLoading, paReq, paymentInfo, transactionStatus} = usePaymentQuery(transactionId);
   const info = paymentInfo as IPFInfo;
 
-  const {mutate, isLoading: cardSubmitting, isSuccess: cardSubmitted} = useCardPay();
+  const {mutate, isLoading: isSubmitting, isSuccess: isSubmitted} = usePaymentProcess();
+
+  const clientInfo = useClientInfo();
 
   React.useEffect(() => {
     const status = readTransactionStatus(transactionStatus);
-    console.log('transaction status', status, 'isLoading', isLoading);
-
     if (status === 'success') {
       navigate('./success');
     }
@@ -35,13 +37,16 @@ export function PaymentProvider({children}: {children: React.ReactNode}) {
   const ctx = React.useMemo<TPaymentContext>(
     () => ({
       info,
-      cardSubmitted,
-      cardSubmitting,
-      makeCardPayment: mutate,
+      isSubmitted,
+      isSubmitting,
+      makePayment: mutate,
       transactionStatus: transactionStatus,
       paReq,
+      clientInfo,
+      paymentType,
+      setPaymentType,
     }),
-    [cardSubmitted, cardSubmitting, info, mutate, paReq, transactionStatus],
+    [clientInfo, info, isSubmitted, isSubmitting, mutate, paReq, paymentType, transactionStatus],
   );
 
   if (isLoading) {
@@ -58,7 +63,7 @@ export function PaymentProvider({children}: {children: React.ReactNode}) {
 export const usePayment = () => {
   const context = React.useContext(PaymentContext);
   if (!context) {
-    throw new Error('context three error');
+    throw new Error('usePayment must be used within a PaymentProvider');
   }
   return context;
 };

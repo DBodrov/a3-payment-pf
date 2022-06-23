@@ -89,7 +89,7 @@ export function CCExpInput(props: ICCInputProps) {
     inputType.current = 'insertFromPaste';
   }, []);
 
-  React.useLayoutEffect(() => {
+  React.useInsertionEffect(() => {
     inputRef?.current?.setSelectionRange(cursorStart, cursorEnd);
   }, [cursorStart, cursorEnd, updateKey]);
 
@@ -107,6 +107,7 @@ export function CCExpInput(props: ICCInputProps) {
       ref={inputRef}
       autoComplete="cc-exp"
       maxLength={5}
+      css={{height: 40, borderRadius: 12, backgroundColor: 'var(--color-background-secondary)'}}
       {...restProps}
     />
   )

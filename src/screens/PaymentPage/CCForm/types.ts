@@ -21,7 +21,6 @@ export const initCCFormValues = {
   ccName: '',
   ccExp: '',
   cvc: '',
-  isAgree: false,
 };
 
 export const initErrorState = {
