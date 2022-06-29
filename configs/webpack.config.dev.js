@@ -127,11 +127,6 @@ module.exports = (env, argv) => {
           changeOrigin: true,
           secure: false,
         },
-        '/v1/processing': {
-          target: 'https://payment-dev.a-3.ru',
-          changeOrigin: true,
-          secure: false,
-        },
       },
     },
   });
