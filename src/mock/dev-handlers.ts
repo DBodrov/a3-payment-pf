@@ -1,5 +1,5 @@
 import {rest} from 'msw';
-
+import {config} from './rosfines';
 
 export const configHandlers = [
   rest.get('/v1/processing/info/:orderId', (req, res, ctx) => {
@@ -15,17 +15,26 @@ export const configHandlers = [
           totalAmount: 349.0,
           prId: 4241,
           config: {
-            homeUrl: 'https://rosfines.ru',
-            logo: 'https://rosfines.ru/themes/custom/rosfines/favicon.ico',
-            companyName: 'РосШтрафы',
-            layout: {
-              paymentSystemOrder: ['card', 'internet']
-            }
+            // homeUrl: 'https://rosfines.ru',
+            // logo: 'https://rosfines.ru/themes/custom/rosfines/favicon.ico',
+            // companyName: 'РосШтрафы',
+            // layout: {
+            //   paymentSystemOrder: ['card', 'internet']
+            // }
           },
         },
       }),
     );
   }),
+  rest.get('/api/v1/contractor/front/configuration/:prId/:key', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        data: JSON.stringify(config)
+      })
+    )
+  })
 ];
 
 export const authHandlers = [
