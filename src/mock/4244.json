@@ -1,0 +1,58 @@
+{
+  "design": {
+    "colors": {
+      "primary": "##13A438",
+      "secondary": "",
+      "background": "#fff",
+      "background-secondary": "##EAEEF4",
+      "text": "#2C2E2B",
+      "text-secondary": "#787698",
+      "link": "#13A438",
+      "border": "#EFEFEF"
+    },
+    "borders": {
+      "radius": 0
+    },
+    "layout": "Portrait" // Portrait || Landscape
+  },
+  "profile": {
+    "name": "ТНС Энерго",
+    "logoUrl": "",
+    "onlyLogo": false,
+    "contactInfo": ""
+  },
+  "URLs": {
+    "website": "",
+    "support": "",
+    "offert": "",
+    "docsReturns": ""
+  },
+  "confirmation": {
+    "offert": true,
+    "docsReturns": false
+  },
+  "notification": {
+    "resultOnEmail": false,
+    "returns": false
+  },
+  "payment": {
+    "details": "sum", //sum, common,
+    "methods": {
+      "internet": ["SberPay", "MirPay", "YP"],
+      "default": "card",
+      "order": ["card", "internet"],
+      "cardCollapse": false
+    },
+    "capture": "warning" // all, none
+  },
+  "clientInfo": {
+    "email": {
+      "enabled": true,
+      "required": false
+    },
+    "phone": {
+      "enabled": true,
+      "required": false
+    }
+  }
+}

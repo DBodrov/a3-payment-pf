@@ -18,7 +18,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx|js|jsx)$/,
+        test: /\.(ts|tsx|js|jsx|json)$/,
         include: /(@a3)/,
         use: 'babel-loader',
         // loader: 'esbuild-loader',

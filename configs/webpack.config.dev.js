@@ -106,6 +106,11 @@ module.exports = (env, argv) => {
         patterns: [{from: 'src/mockServiceWorker.js', to: 'dist/mockServiceWorker.js'}],
       }),
     ],
+
+    experiments: {
+      topLevelAwait: true,
+    },
+
     devServer: {
       hot: true,
       server: {
