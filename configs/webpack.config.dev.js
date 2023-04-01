@@ -34,11 +34,6 @@ module.exports = (env, argv) => {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
           use: 'babel-loader',
-          // loader: 'esbuild-loader',
-          // options: {
-          //   loader: 'tsx',
-          //   target: 'es2015',
-          // },
         },
         {
           test: /\.css$/i,
