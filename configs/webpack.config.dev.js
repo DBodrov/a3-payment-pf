@@ -9,7 +9,6 @@ const {sslCert, sslKey} = require('./cert');
 const commonConfig = require('./webpack.config.common');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-
 const PORT = 6333;
 const VERSION = require('../package.json').version;
 const dev = process.env.NODE_ENV !== 'production';
@@ -59,7 +58,7 @@ module.exports = (env, argv) => {
             },
             {
               loader: 'css-loader',
-              options: { sourceMap: dev },
+              options: {sourceMap: dev},
             },
           ],
         },
@@ -115,7 +114,7 @@ module.exports = (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [{from: 'src/mockServiceWorker.js', to: 'dist/mockServiceWorker.js'}],
       }),
-      new MiniCssExtractPlugin({ filename: 'styles.css' }),
+      new MiniCssExtractPlugin({filename: 'styles.css'}),
     ],
 
     experiments: {
