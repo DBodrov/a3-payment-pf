@@ -7,9 +7,12 @@ const WebpackBar = require('webpackbar');
 const {resolveApp, appName} = require('./utils');
 const {sslCert, sslKey} = require('./cert');
 const commonConfig = require('./webpack.config.common');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const PORT = 6333;
 const VERSION = require('../package.json').version;
+const dev = process.env.NODE_ENV !== 'production';
 
 module.exports = (env, argv) => {
   return webpackMerge.merge(commonConfig, {
@@ -33,7 +36,15 @@ module.exports = (env, argv) => {
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
-          use: 'babel-loader',
+          use: [
+            'babel-loader',
+            {
+              loader: '@linaria/webpack-loader',
+              options: {
+                sourceMap: process.env.NODE_ENV !== 'production',
+              },
+            },
+          ],
           // loader: 'esbuild-loader',
           // options: {
           //   loader: 'tsx',
@@ -41,16 +52,15 @@ module.exports = (env, argv) => {
           // },
         },
         {
-          test: /\.css$/i,
+          test: /\.css$/,
           use: [
-            'style-loader',
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
             {
               loader: 'css-loader',
-              options: {
-                modules: {localIdentName: '[path][name]__[local]--[hash:base64:5]'},
-              },
+              options: { sourceMap: dev },
             },
-            'postcss-loader',
           ],
         },
       ],
@@ -105,6 +115,7 @@ module.exports = (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [{from: 'src/mockServiceWorker.js', to: 'dist/mockServiceWorker.js'}],
       }),
+      new MiniCssExtractPlugin({ filename: 'styles.css' }),
     ],
 
     experiments: {

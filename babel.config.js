@@ -10,6 +10,7 @@ module.exports = api => {
       },
     ],
     '@babel/preset-react',
+    '@linaria',
     '@babel/preset-typescript',
     [
       '@emotion/babel-preset-css-prop',
@@ -29,7 +30,7 @@ module.exports = api => {
     '@babel/plugin-proposal-nullish-coalescing-operator',
     // ['@babel/plugin-transform-runtime', {regenerator: true}],
     '@emotion',
-    '@babel/plugin-transform-runtime'
+    '@babel/plugin-transform-runtime',
   ];
   return {presets, plugins, sourceType: 'unambiguous'};
 };
